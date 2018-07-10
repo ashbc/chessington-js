@@ -42,6 +42,29 @@ describe('Pawn', () => {
             moves.should.be.empty;
         });
 
+
+        it('can take opposing pieces diagonally', () => {
+            const pawn = new Pawn(Player.WHITE);
+            const opposingPiece = new Pawn(Player.BLACK);
+            board.setPiece(Square.at(4, 4), pawn);
+            board.setPiece(Square.at(5, 5), opposingPiece);
+
+            const moves = pawn.getAvailableMoves(board);
+
+            moves.should.deep.include(Square.at(5, 5));
+        });
+
+        it('cannot take friendly pieces diagonally', () => {
+            const pawn = new Pawn(Player.WHITE);
+            const otherPiece = new Pawn(Player.WHITE);
+            board.setPiece(Square.at(4, 4), pawn);
+            board.setPiece(Square.at(5, 5), otherPiece);
+
+            const moves = pawn.getAvailableMoves(board);
+
+            moves.should.not.deep.include(Square.at(5, 5));
+        });
+
     });
 
     describe('black pawns', () => {
@@ -77,6 +100,29 @@ describe('Pawn', () => {
             const moves = pawn.getAvailableMoves(board);
 
             moves.should.be.empty;
+        });
+
+
+        it('can take opposing pieces diagonally', () => {
+            const pawn = new Pawn(Player.WHITE);
+            const opposingPiece = new Pawn(Player.BLACK);
+            board.setPiece(Square.at(4, 4), pawn);
+            board.setPiece(Square.at(3, 5), opposingPiece);
+
+            const moves = pawn.getAvailableMoves(board);
+
+            moves.should.deep.include(Square.at(3, 5));
+        });
+
+        it('cannot take friendly pieces diagonally', () => {
+            const pawn = new Pawn(Player.WHITE);
+            const otherPiece = new Pawn(Player.WHITE);
+            board.setPiece(Square.at(4, 4), pawn);
+            board.setPiece(Square.at(3, 5), otherPiece);
+
+            const moves = pawn.getAvailableMoves(board);
+
+            moves.should.not.deep.include(Square.at(3, 5));
         });
     });
 
