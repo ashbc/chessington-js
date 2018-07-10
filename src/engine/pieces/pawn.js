@@ -15,9 +15,9 @@ export default class Pawn extends Piece {
         const squareAhead = Square.at(boardLocation.row + direction, boardLocation.col);
         const squareTwoAhead = Square.at(boardLocation.row + 2 * direction, boardLocation.col);
 
-        if (!board.getPiece(squareAhead)) {
+        if (squareAhead.isOnBoard() && !board.getPiece(squareAhead)) {
             moves.push(squareAhead);
-            if (!this.hasMoved && !board.getPiece(squareTwoAhead)) {
+            if (!this.hasMoved && squareTwoAhead.isOnBoard() && !board.getPiece(squareTwoAhead)) {
                 moves.push(squareTwoAhead);
             }
         }
