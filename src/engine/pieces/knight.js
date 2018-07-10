@@ -1,4 +1,5 @@
 import Piece from './piece';
+import Square from '../square';
 
 export default class Knight extends Piece {
     constructor(player) {
@@ -6,6 +7,9 @@ export default class Knight extends Piece {
     }
 
     getAvailableMoves(board) {
-        return new Array(0);
+    	const boardLocation = board.findPiece(this);
+    	return [[1,2], [-1,2], [1,-2], [-1,-2], [2,1], [-2,1], [2,-1], [-2,-1]]
+    		.map(space => Square.at(boardLocation.row + space[0], boardLocation.col + space[1]))
+    		.filter(square => square.isOnBoard());
     }
 }
