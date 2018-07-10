@@ -50,12 +50,13 @@ export default class Piece {
         return moves;
     }
 
-    getDiagonal(boardLocation) {
+    getDiagonal(boardLocation, board) {
         let moves = [];
-        for(let i = 1; i<GameSettings.BOARD_SIZE; i++) {
-            moves = moves.concat(this.createSquares(boardLocation, 
-                [[i, i], [-i, i], [i, -i], [-i, -i]]));
-        }
+
+        [[1, 1], [-1, 1], [1, -1], [-1, -1]]
+        .map(x => this.checkDirection(boardLocation, board, ...x))
+        .forEach(x => moves = moves.concat(x));
+
         return moves;
     }
 

@@ -7,6 +7,6 @@ export default class Bishop extends Piece {
 
     getAvailableMoves(board) {
     	const boardLocation = board.findPiece(this);
-    	return this.getDiagonal(boardLocation);
+    	return this.getDiagonal(boardLocation, board);
     }
 }
