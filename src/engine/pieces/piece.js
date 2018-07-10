@@ -31,11 +31,10 @@ export default class Piece {
     getDiagonal(boardLocation) {
         let moves = [];
         for(let i = 1; i<GameSettings.BOARD_SIZE; i++) {
-            const newSquares = [Square.at(boardLocation.row + i, boardLocation.col + i),
-                         Square.at(boardLocation.row - i, boardLocation.col + i),
-                         Square.at(boardLocation.row + i, boardLocation.col - i),
-                         Square.at(boardLocation.row - i, boardLocation.col - i)];
-            moves = moves.concat(newSquares.filter(square => square.isOnBoard()));
+            moves = moves.concat([
+                [1, 1], [-1, 1], [1, -1], [-1, -1]
+            ].map(space => Square.at(boardLocation.row + space[0]*i, boardLocation.col + space[1]*i))
+            .filter(square => square.isOnBoard()));
         }
         return moves;
     }
