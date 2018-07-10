@@ -60,9 +60,12 @@ export default class Piece {
         return moves;
     }
 
-    createSquares(boardLocation, offsets) {
+    createSquares(boardLocation, board, offsets) {
         return offsets
             .map(space => Square.at(boardLocation.row + space[0], boardLocation.col + space[1]))
-            .filter(square => square.isOnBoard());
+            .filter(square => square.isOnBoard())
+            .filter(square => 
+                !board.getPiece(square)
+                || board.getPiece(square).player !== this.player);
     }
 }

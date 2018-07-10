@@ -8,7 +8,7 @@ export default class Knight extends Piece {
 
     getAvailableMoves(board) {
     	const boardLocation = board.findPiece(this);
-    	return this.createSquares(boardLocation,
+    	return this.createSquares(boardLocation, board,
     		[[1,2], [-1,2], [1,-2], [-1,-2], [2,1], [-2,1], [2,-1], [-2,-1]]);
     }
 }
