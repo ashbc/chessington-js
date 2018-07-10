@@ -22,6 +22,11 @@ export default class Pawn extends Piece {
             }
         }
 
+       moves = moves.concat(this.createSquares(boardLocation, board, [
+            [direction, 1],
+            [direction, -1]
+        ]).filter(square => !!board.getPiece(square)));
+
     	return moves;
     }
 }
