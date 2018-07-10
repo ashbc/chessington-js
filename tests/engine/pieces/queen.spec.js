@@ -1,6 +1,7 @@
 import 'chai/register-should';
 import Queen from '../../../src/engine/pieces/queen';
 import Pawn from '../../../src/engine/pieces/pawn';
+import King from '../../../src/engine/pieces/king';
 import Board from '../../../src/engine/board';
 import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
@@ -95,6 +96,17 @@ describe('Queen', () => {
     it('cannot take friendly pieces laterally', () => {
         assertTake(board, Queen, Square.at(4,4), Player.WHITE,
                           Pawn, Square.at(4,6), Player.WHITE, false);
+    });
+
+    it('cannot take king diagonally', () => {
+        assertTake(board, Queen, Square.at(4,4), Player.WHITE,
+                          King, Square.at(6,6), Player.BLACK, false);
+    });
+
+    it('cannot take king laterally', () => {
+        assertTake(board, Queen, Square.at(4,4), Player.WHITE,
+                          King, Square.at(4,6), Player.BLACK, false);        
+
     });
 
 });

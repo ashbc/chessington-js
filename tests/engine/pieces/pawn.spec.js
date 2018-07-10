@@ -1,6 +1,7 @@
 import 'chai/register-should';
 import Pawn from '../../../src/engine/pieces/pawn';
 import Rook from '../../../src/engine/pieces/rook';
+import King from '../../../src/engine/pieces/king';
 import Board from '../../../src/engine/board';
 import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
@@ -53,7 +54,40 @@ describe('Pawn', () => {
             assertTake(board, Pawn, Square.at(4,4), Player.WHITE,
                           Pawn, Square.at(5, 5), Player.WHITE, false);
         });
+        
+        it('cannot take king diagonally', () => {
+            assertTake(board, Pawn, Square.at(4,4), Player.WHITE,
+                              King, Square.at(5, 5), Player.BLACK, false);
+        });
 
+        it('can en-passant', () => {
+            const pawn1 = new Pawn(Player.WHITE);
+            const pawn2 = new Pawn(Player.BLACK);
+
+            board.currentPlayer = Player.BLACK;
+
+            board.setPiece(Square.at(4, 0), pawn1);
+            board.setPiece(Square.at(6, 1), pawn2);
+
+            pawn2.moveTo(board, Square.at(4, 1));
+            console.log(board.findPiece(pawn2));
+
+            pawn1.getAvailableMoves(board).should.deep.include(Square.at(5, 1));
+        });
+
+        it('take with en-passant', () => {
+            const pawn1 = new Pawn(Player.WHITE);
+            const pawn2 = new Pawn(Player.BLACK);
+
+            board.setPiece(Square.at(4, 0), pawn1);
+            board.setPiece(Square.at(6, 1), pawn2);
+
+            board.currentPlayer = Player.BLACK;
+
+            pawn2.moveTo(board, Square.at(4, 1));
+            pawn1.moveTo(board, Square.at(5, 1));
+            should.not.exist(board.getPiece(Square.at(4, 1)));
+        });
     });
 
     describe('black pawns', () => {
@@ -100,6 +134,45 @@ describe('Pawn', () => {
         it('cannot take friendly pieces diagonally', () => {
             assertTake(board, Pawn, Square.at(4,4), Player.BLACK,
                           Pawn, Square.at(3, 5), Player.BLACK, false);
+        });
+
+        it('cannot take king', () => {
+            assertTake(board, Pawn, Square.at(4,4), Player.BLACK,
+                          King, Square.at(3, 5), Player.WHITE, false);
+        });
+
+        it('can en-passant', () => {
+            const pawn1 = new Pawn(Player.BLACK);
+            const pawn2 = new Pawn(Player.WHITE);
+
+            board.currentPlayer = Player.WHITE;
+
+            board.setPiece(Square.at(3, 0), pawn1);
+            board.setPiece(Square.at(1, 1), pawn2);
+
+            pawn2.moveTo(board, Square.at(3, 1));
+
+            console.log(board.findPiece(pawn2));
+
+            pawn1.getAvailableMoves(board).should.deep.include(Square.at(2, 1));
+        });
+
+        it('take with en-passant', () => {
+            const pawn1 = new Pawn(Player.BLACK);
+            const pawn2 = new Pawn(Player.WHITE);
+
+            board.currentPlayer = Player.WHITE;
+
+            board.setPiece(Square.at(3, 0), pawn1);
+            board.setPiece(Square.at(1, 1), pawn2);
+
+
+            pawn2.moveTo(board, Square.at(3, 1));
+            console.log(board.findPiece(pawn2));
+            console.log(pawn2);
+            should.exist(board.getPiece(Square.at(3, 1)));
+            pawn1.moveTo(board, Square.at(2, 1));
+            should.not.exist(board.getPiece(Square.at(3, 1)));
         });
     });
 

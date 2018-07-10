@@ -66,4 +66,14 @@ describe('King', () => {
         assertTake(board, King, Square.at(4,4), Player.WHITE,
                           Pawn, Square.at(5,5), Player.WHITE, false);
     });
+
+    it('cannot take king laterally', () => {
+        assertTake(board, King, Square.at(4,4), Player.WHITE,
+                          King, Square.at(4,5), Player.BLACK, false);
+    });
+
+    it('cannot take king diagonally', () => {
+        assertTake(board, King, Square.at(4,4), Player.WHITE,
+                          King, Square.at(5,5), Player.BLACK, false);
+    });    
 });

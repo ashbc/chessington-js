@@ -1,6 +1,7 @@
 import 'chai/register-should';
 import Knight from '../../../src/engine/pieces/knight';
 import Pawn from '../../../src/engine/pieces/pawn';
+import King from '../../../src/engine/pieces/king';
 import Board from '../../../src/engine/board';
 import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
@@ -66,5 +67,10 @@ describe('Knight', () => {
     it('cannot take friendly pieces', () => {
         assertTake(board, Knight, Square.at(4,4), Player.WHITE,
                           Pawn, Square.at(5, 6), Player.WHITE, false);
+    });
+
+    it('cannot take king', () => {
+        assertTake(board, Knight, Square.at(4,4), Player.WHITE,
+                          King, Square.at(5, 6), Player.BLACK, false);
     });
 });
