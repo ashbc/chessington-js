@@ -4,6 +4,7 @@ import Pawn from '../../../src/engine/pieces/pawn';
 import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
 import Board from '../../../src/engine/board';
+import assertTake from '../assert_take'
 
 describe('Bishop', () => {
 
@@ -58,24 +59,12 @@ describe('Bishop', () => {
     });
 
     it('can take opposing pieces', () => {
-        const bishop = new Bishop(Player.WHITE);
-        const opposingPiece = new Pawn(Player.BLACK);
-        board.setPiece(Square.at(4, 4), bishop);
-        board.setPiece(Square.at(6, 6), opposingPiece);
-
-        const moves = bishop.getAvailableMoves(board);
-
-        moves.should.deep.include(Square.at(6, 6));
+        assertTake(board, Bishop, Square.at(4,4), Player.WHITE,
+                          Pawn, Square.at(6,6), Player.BLACK, true);
     });
 
     it('cannot take friendly pieces', () => {
-        const bishop = new Bishop(Player.WHITE);
-        const otherPiece = new Pawn(Player.WHITE);
-        board.setPiece(Square.at(4, 4), bishop);
-        board.setPiece(Square.at(6, 6), otherPiece);
-
-        const moves = bishop.getAvailableMoves(board);
-
-        moves.should.not.deep.include(Square.at(6, 6));
+        assertTake(board, Bishop, Square.at(4,4), Player.WHITE,
+                          Pawn, Square.at(6,6), Player.WHITE, false);
     });
 });

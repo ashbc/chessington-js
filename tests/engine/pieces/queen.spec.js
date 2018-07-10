@@ -5,6 +5,7 @@ import Board from '../../../src/engine/board';
 import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
 import GameSettings from '../../../src/engine/gameSettings';
+import assertTake from '../assert_take';
 
 describe('Queen', () => {
 
@@ -75,47 +76,25 @@ describe('Queen', () => {
     });
 
     it('can take opposing pieces diagonally', () => {
-        const queen = new Queen(Player.WHITE);
-        const opposingPiece = new Pawn(Player.BLACK);
-        board.setPiece(Square.at(4, 4), queen);
-        board.setPiece(Square.at(6, 6), opposingPiece);
+        assertTake(board, Queen, Square.at(4,4), Player.WHITE,
+                          Pawn, Square.at(6,6), Player.BLACK, true);
 
-        const moves = queen.getAvailableMoves(board);
-
-        moves.should.deep.include(Square.at(6, 6));
     });
 
     it('cannot take friendly pieces diagonally', () => {
-        const queen = new Queen(Player.WHITE);
-        const otherPiece = new Pawn(Player.WHITE);
-        board.setPiece(Square.at(4, 4), queen);
-        board.setPiece(Square.at(6, 6), otherPiece);
-
-        const moves = queen.getAvailableMoves(board);
-
-        moves.should.not.deep.include(Square.at(6, 6));
+        assertTake(board, Queen, Square.at(4,4), Player.WHITE,
+                          Pawn, Square.at(6,6), Player.WHITE, false);
     });
 
     it('can take opposing pieces laterally', () => {
-        const queen = new Queen(Player.WHITE);
-        const opposingPiece = new Pawn(Player.BLACK);
-        board.setPiece(Square.at(4, 4), queen);
-        board.setPiece(Square.at(4, 6), opposingPiece);
+        assertTake(board, Queen, Square.at(4,4), Player.WHITE,
+                          Pawn, Square.at(4,6), Player.BLACK, true);        
 
-        const moves = queen.getAvailableMoves(board);
-
-        moves.should.deep.include(Square.at(4, 6));
     });
 
     it('cannot take friendly pieces laterally', () => {
-        const queen = new Queen(Player.WHITE);
-        const otherPiece = new Pawn(Player.WHITE);
-        board.setPiece(Square.at(4, 4), queen);
-        board.setPiece(Square.at(4, 6), otherPiece);
-
-        const moves = queen.getAvailableMoves(board);
-
-        moves.should.not.deep.include(Square.at(4, 6));
+        assertTake(board, Queen, Square.at(4,4), Player.WHITE,
+                          Pawn, Square.at(4,6), Player.WHITE, false);
     });
 
 });

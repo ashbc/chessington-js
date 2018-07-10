@@ -4,6 +4,7 @@ import Rook from '../../../src/engine/pieces/rook';
 import Board from '../../../src/engine/board';
 import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
+import assertTake from '../assert_take';
 
 describe('Pawn', () => {
 
@@ -44,25 +45,13 @@ describe('Pawn', () => {
 
 
         it('can take opposing pieces diagonally', () => {
-            const pawn = new Pawn(Player.WHITE);
-            const opposingPiece = new Pawn(Player.BLACK);
-            board.setPiece(Square.at(4, 4), pawn);
-            board.setPiece(Square.at(5, 5), opposingPiece);
-
-            const moves = pawn.getAvailableMoves(board);
-
-            moves.should.deep.include(Square.at(5, 5));
+            assertTake(board, Pawn, Square.at(4,4), Player.WHITE,
+                          Pawn, Square.at(5, 5), Player.BLACK, true);
         });
 
         it('cannot take friendly pieces diagonally', () => {
-            const pawn = new Pawn(Player.WHITE);
-            const otherPiece = new Pawn(Player.WHITE);
-            board.setPiece(Square.at(4, 4), pawn);
-            board.setPiece(Square.at(5, 5), otherPiece);
-
-            const moves = pawn.getAvailableMoves(board);
-
-            moves.should.not.deep.include(Square.at(5, 5));
+            assertTake(board, Pawn, Square.at(4,4), Player.WHITE,
+                          Pawn, Square.at(5, 5), Player.WHITE, false);
         });
 
     });
@@ -104,27 +93,13 @@ describe('Pawn', () => {
 
 
         it('can take opposing pieces diagonally', () => {
-            const pawn = new Pawn(Player.BLACK);
-            const opposingPiece = new Pawn(Player.WHITE);
-            board.setPiece(Square.at(4, 4), pawn);
-            board.setPiece(Square.at(3, 5), opposingPiece);
-
-            const moves = pawn.getAvailableMoves(board);
-
-            console.log(moves);
-
-            moves.should.deep.include(Square.at(3, 5));
+            assertTake(board, Pawn, Square.at(4,4), Player.BLACK,
+                          Pawn, Square.at(3, 5), Player.WHITE, true);
         });
 
         it('cannot take friendly pieces diagonally', () => {
-            const pawn = new Pawn(Player.BLACK);
-            const otherPiece = new Pawn(Player.BLACK);
-            board.setPiece(Square.at(4, 4), pawn);
-            board.setPiece(Square.at(3, 5), otherPiece);
-
-            const moves = pawn.getAvailableMoves(board);
-
-            moves.should.not.deep.include(Square.at(3, 5));
+            assertTake(board, Pawn, Square.at(4,4), Player.BLACK,
+                          Pawn, Square.at(3, 5), Player.BLACK, false);
         });
     });
 

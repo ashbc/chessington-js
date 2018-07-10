@@ -3,7 +3,8 @@ import King from '../../../src/engine/pieces/king';
 import Board from '../../../src/engine/board';
 import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
-import Pawn from '../../../src/engine/pieces/pawn'
+import Pawn from '../../../src/engine/pieces/pawn';
+import assertTake from '../assert_take';
 
 describe('King', () => {
 
@@ -45,47 +46,24 @@ describe('King', () => {
     });
 
     it('can take opposing pieces laterally', () => {
-        const king = new King(Player.WHITE);
-        const opposingPiece = new Pawn(Player.BLACK);
-        board.setPiece(Square.at(4, 4), king);
-        board.setPiece(Square.at(4, 5), opposingPiece);
+        assertTake(board, King, Square.at(4,4), Player.WHITE,
+                          Pawn, Square.at(4,5), Player.BLACK, true);
 
-        const moves = king.getAvailableMoves(board);
-
-        moves.should.deep.include(Square.at(4, 5));
     });
 
     it('cannot take friendly pieces laterally', () => {
-        const king = new King(Player.WHITE);
-        const otherPiece = new Pawn(Player.WHITE);
-        board.setPiece(Square.at(4, 4), king);
-        board.setPiece(Square.at(4, 5), otherPiece);
-
-        const moves = king.getAvailableMoves(board);
-
-        moves.should.not.deep.include(Square.at(4, 5));
+        assertTake(board, King, Square.at(4,4), Player.WHITE,
+                          Pawn, Square.at(4,5), Player.WHITE, false);
     });
 
 
     it('can take opposing pieces diagonally', () => {
-        const king = new King(Player.WHITE);
-        const opposingPiece = new Pawn(Player.BLACK);
-        board.setPiece(Square.at(4, 4), king);
-        board.setPiece(Square.at(5, 5), opposingPiece);
-
-        const moves = king.getAvailableMoves(board);
-
-        moves.should.deep.include(Square.at(5, 5));
+        assertTake(board, King, Square.at(4,4), Player.WHITE,
+                          Pawn, Square.at(5,5), Player.BLACK, true);
     });
 
     it('cannot take friendly pieces diagonally', () => {
-        const king = new King(Player.WHITE);
-        const otherPiece = new Pawn(Player.WHITE);
-        board.setPiece(Square.at(4, 4), king);
-        board.setPiece(Square.at(5, 5), otherPiece);
-
-        const moves = king.getAvailableMoves(board);
-
-        moves.should.not.deep.include(Square.at(5, 5));
+        assertTake(board, King, Square.at(4,4), Player.WHITE,
+                          Pawn, Square.at(5,5), Player.WHITE, false);
     });
 });
