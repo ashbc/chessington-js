@@ -104,19 +104,21 @@ describe('Pawn', () => {
 
 
         it('can take opposing pieces diagonally', () => {
-            const pawn = new Pawn(Player.WHITE);
-            const opposingPiece = new Pawn(Player.BLACK);
+            const pawn = new Pawn(Player.BLACK);
+            const opposingPiece = new Pawn(Player.WHITE);
             board.setPiece(Square.at(4, 4), pawn);
             board.setPiece(Square.at(3, 5), opposingPiece);
 
             const moves = pawn.getAvailableMoves(board);
 
+            console.log(moves);
+
             moves.should.deep.include(Square.at(3, 5));
         });
 
         it('cannot take friendly pieces diagonally', () => {
-            const pawn = new Pawn(Player.WHITE);
-            const otherPiece = new Pawn(Player.WHITE);
+            const pawn = new Pawn(Player.BLACK);
+            const otherPiece = new Pawn(Player.BLACK);
             board.setPiece(Square.at(4, 4), pawn);
             board.setPiece(Square.at(3, 5), otherPiece);
 
