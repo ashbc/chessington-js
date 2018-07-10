@@ -88,6 +88,28 @@ describe('Pawn', () => {
             pawn1.moveTo(board, Square.at(5, 1));
             should.not.exist(board.getPiece(Square.at(4, 1)));
         });
+
+        it('cannot wait before en-passant', () => {
+            const pawn1 = new Pawn(Player.WHITE);
+            const pawn2 = new Pawn(Player.BLACK);
+            const pawn3 = new Pawn(Player.WHITE);
+            const pawn4 = new Pawn(Player.BLACK);
+
+            board.setPiece(Square.at(4, 0), pawn1);
+            board.setPiece(Square.at(6, 1), pawn2);
+            board.setPiece(Square.at(1, 6), pawn3);
+            board.setPiece(Square.at(6, 6), pawn4);
+
+            board.currentPlayer = Player.BLACK;
+
+            pawn2.moveTo(board, Square.at(4, 1));
+            pawn3.moveTo(board, Square.at(2, 6));
+            pawn4.moveTo(board, Square.at(5, 6));
+            
+            const moves = pawn1.getAvailableMoves(board)
+            moves.should.not.deep.include(Square.at(5, 1));
+
+        });
     });
 
     describe('black pawns', () => {
@@ -152,8 +174,6 @@ describe('Pawn', () => {
 
             pawn2.moveTo(board, Square.at(3, 1));
 
-            console.log(board.findPiece(pawn2));
-
             pawn1.getAvailableMoves(board).should.deep.include(Square.at(2, 1));
         });
 
@@ -168,11 +188,31 @@ describe('Pawn', () => {
 
 
             pawn2.moveTo(board, Square.at(3, 1));
-            console.log(board.findPiece(pawn2));
-            console.log(pawn2);
+
             should.exist(board.getPiece(Square.at(3, 1)));
             pawn1.moveTo(board, Square.at(2, 1));
             should.not.exist(board.getPiece(Square.at(3, 1)));
+        });
+
+        it('cannot wait before en-passant', () => {
+            const pawn1 = new Pawn(Player.BLACK);
+            const pawn2 = new Pawn(Player.WHITE);
+            const pawn3 = new Pawn(Player.BLACK);
+            const pawn4 = new Pawn(Player.WHITE);
+
+            board.currentPlayer = Player.WHITE;
+
+            board.setPiece(Square.at(3, 0), pawn1);
+            board.setPiece(Square.at(1, 1), pawn2);
+            board.setPiece(Square.at(6, 6), pawn3);
+            board.setPiece(Square.at(1, 6), pawn4);
+
+            pawn2.moveTo(board, Square.at(3, 1));
+            pawn3.moveTo(board, Square.at(5, 6));
+            pawn4.moveTo(board, Square.at(2, 6));
+
+            const moves = pawn1.getAvailableMoves(board);
+            moves.should.not.deep.include(Square.at(2, 1));
         });
     });
 
