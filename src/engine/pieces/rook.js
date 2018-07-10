@@ -7,6 +7,6 @@ export default class Rook extends Piece {
 
     getAvailableMoves(board) {
     	const boardLocation = board.findPiece(this);
-        return this.getLateral(boardLocation);
+        return this.getLateral(boardLocation, board);
     }
 }

@@ -17,13 +17,35 @@ export default class Piece {
         this.hasMoved = true;
     }
 
-    getLateral(boardLocation) {
+    getLateral(boardLocation, board) {
         let moves = [];
-        for(let i = 0; i < GameSettings.BOARD_SIZE; i++) {
-            moves = moves.concat([
-                Square.at(i, boardLocation.col),
-                Square.at(boardLocation.row, i)
-            ].filter(x => !x.equals(boardLocation)));
+
+        [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        .map(x => this.checkDirection(boardLocation, board, ...x))
+        .forEach(x => moves = moves.concat(x));
+
+        return moves;
+       
+    }
+
+    checkDirection(boardLocation, board, rowOffset, colOffset) {
+        const moves = [];
+        for(let i = 1; i < GameSettings.BOARD_SIZE; i++) {
+            const newLocation = Square.at(
+                boardLocation.row + rowOffset * i,
+                boardLocation.col + colOffset * i
+            );
+
+            if(!newLocation.isOnBoard()) break;
+            const occupant = board.getPiece(newLocation);
+            if(!occupant) {
+                moves.push(newLocation);
+            } else if(this.player !== occupant.player) {
+                moves.push(newLocation);
+                break;
+            } else {
+                break;
+            }
         }
         return moves;
     }
