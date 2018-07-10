@@ -56,4 +56,26 @@ describe('Rook', () => {
 
         moves.should.not.deep.include(Square.at(4, 7));
     });
+
+        it('can take opposing pieces laterally', () => {
+        const rook = new Rook(Player.WHITE);
+        const opposingPiece = new Pawn(Player.BLACK);
+        board.setPiece(Square.at(4, 4), rook);
+        board.setPiece(Square.at(4, 6), opposingPiece);
+
+        const moves = rook.getAvailableMoves(board);
+
+        moves.should.deep.include(Square.at(4, 6));
+    });
+
+    it('cannot take friendly pieces laterally', () => {
+        const rook = new Rook(Player.WHITE);
+        const otherPiece = new Pawn(Player.WHITE);
+        board.setPiece(Square.at(4, 4), rook);
+        board.setPiece(Square.at(4, 6), otherPiece);
+
+        const moves = rook.getAvailableMoves(board);
+
+        moves.should.not.deep.include(Square.at(4, 6));
+    });
 });
