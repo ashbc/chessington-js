@@ -54,9 +54,9 @@ describe('Board', () => {
             board.setPiece(Square.at(3, 3), king);
             board.setPiece(Square.at(3, 4), queen);
 
-            board.isCheck(Player.WHITE).should.be.true();
+            board.isCheck(Player.WHITE).should.be.true;
         });
-        
+
         it('is not incorrectly stated', () => {
             const king = new King(Player.WHITE);
             const queen = new Queen(Player.BLACK);
@@ -64,7 +64,7 @@ describe('Board', () => {
             board.setPiece(Square.at(3, 3), king);
             board.setPiece(Square.at(4, 5), queen);
 
-            board.isCheck(Player.WHITE).should.be.false();
+            board.isCheck(Player.WHITE).should.be.false;
         });
     });
 });
