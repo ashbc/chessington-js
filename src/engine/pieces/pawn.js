@@ -6,11 +6,12 @@ export default class Pawn extends Piece {
     constructor(player) {
         super(player);
         this.hasMovedTwoSpaces = false;
+        this.direction = this.player === Player.WHITE ? 1 : -1;
     }
 
     getAvailableMoves(board) {
     	const boardLocation = board.findPiece(this);
-    	const direction = this.player === Player.WHITE ? 1 : -1;
+    	const direction = this.direction;
     	let moves = [];
 
         const squareAhead = Square.at(boardLocation.row + direction, boardLocation.col);
@@ -44,6 +45,9 @@ export default class Pawn extends Piece {
 
     moveTo(board, newSquare) {
         const fromSquare = board.findPiece(this);
+        if(fromSquare.col !== newSquare.col && !board.getPiece(newSquare)) {
+            board.setPiece(Square.at(newSquare.row - this.direction, newSquare.col), undefined);
+        }
         super.moveTo(board, newSquare);
         this.hasMovedTwoSpaces = (Math.abs(newSquare.row - fromSquare.row) === 2);
     }
