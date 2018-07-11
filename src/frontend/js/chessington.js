@@ -69,7 +69,12 @@ function onDrop(source, target) {
         return 'snapback';
     }
     pieceToMove.moveTo(board, toSquare);
+
     updateStatus();
+}
+
+function onSnapEnd() {
+    boardUI.position(boardToPositionObject(board));
 }
 
 function updateStatus() {
@@ -118,7 +123,8 @@ export function createChessBoard() {
             draggable: true,
             position: boardToPositionObject(board),
             onDragStart: onDragStart,
-            onDrop: onDrop
+            onDrop: onDrop,
+            onSnapEnd: onSnapEnd,
         }
     );
     updateStatus();
