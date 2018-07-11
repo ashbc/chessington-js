@@ -175,6 +175,17 @@ describe('King', () => {
         moves.should.not.deep.include(Square.at(0, 2));
     });
 
+    it('cannot castle with opponent\'s rook', () => {
+        const king = new King(Player.WHITE);
+        const rook = new Rook(Player.BLACK);
+        board.setPiece(Square.at(0, 4), king);
+        board.setPiece(Square.at(0, 7), rook);
+
+        const moves = king.getAvailableMoves(board);
+
+        moves.should.not.deep.include(Square.at(0, 6));
+    })
+
     it('cannot be promoted', () => {
         canBePromoted(board, King, Player.WHITE, Square.at(7, 0), false);
     });
