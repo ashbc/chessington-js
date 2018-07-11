@@ -8,7 +8,7 @@ export default class King extends Piece {
         super(player);
     }
 
-    getAvailableMoves(board) {
+    getAvailableMovesWithKing(board) {
     	const boardLocation = board.findPiece(this);
     	let moves = this.createSquares(boardLocation, board, [
     		[1,1], [-1,1], [1,-1], [-1,-1],
@@ -37,10 +37,6 @@ export default class King extends Piece {
         super.moveTo(board, newSquare);
     }
 
-    canBeTakenBy(taker) {
-        return false;
-    }
-
     findRook(boardLocation, board, side) {
         for(let i = 1; i < GameSettings.BOARD_SIZE; i++) {
             const newLocation = Square.at(
@@ -63,5 +59,9 @@ export default class King extends Piece {
         if(rookLocation) {
             moves.push(Square.at(boardLocation.row, boardLocation.col + side * 2));
         }
+    }
+
+    isKing() {
+        return true;
     }
 }

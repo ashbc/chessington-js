@@ -10,7 +10,7 @@ export default class Pawn extends Piece {
         this.direction = this.player === Player.WHITE ? 1 : -1;
     }
 
-    getAvailableMoves(board) {
+    getAvailableMovesWithKing(board) {
     	const boardLocation = board.findPiece(this);
     	const direction = this.direction;
     	let moves = [];
@@ -30,8 +30,8 @@ export default class Pawn extends Piece {
             [direction, -1]
         ]).filter(square => !!board.getPiece(square)));
 
-        this.checkEnPassant(boardLocation, board, moves, 1);
-        this.checkEnPassant(boardLocation, board, moves, -1);
+        this.addEnPassantMoves(boardLocation, board, moves, 1);
+        this.addEnPassantMoves(boardLocation, board, moves, -1);
 
     	return moves;
     }
@@ -45,7 +45,7 @@ export default class Pawn extends Piece {
         this.hasMovedTwoSpaces = (Math.abs(newSquare.row - fromSquare.row) === 2);
     }
 
-    checkEnPassant(boardLocation, board, moves, side) {
+    addEnPassantMoves(boardLocation, board, moves, side) {
         const piece = board.getPiece(Square.at(boardLocation.row, boardLocation.col+side));
         if(piece && piece.hasMovedTwoSpaces && board.lastPieceMoved === piece) {
             moves.push(Square.at(boardLocation.row + this.direction, boardLocation.col+side));

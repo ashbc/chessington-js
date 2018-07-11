@@ -53,4 +53,15 @@ export default class Board {
         const player = this.getPiece(square).player;
         this.setPiece(square, new pieceClass(player));
     }
+
+    isCheck(player) {
+        return this.board.some(row => 
+            row.some(piece =>
+                piece.player !== player
+                && piece.getAvailableMovesWithKing(this).some(square =>
+                    this.getPiece(square) && this.getPiece(square).isKing()
+                )
+            )
+        )
+    }
 }

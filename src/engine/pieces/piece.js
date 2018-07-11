@@ -8,7 +8,11 @@ export default class Piece {
     }
 
     getAvailableMoves(board) {
-        throw new Error('This method must be implemented, and return a list of available moves');
+        return this.getAvailableMovesWithKing(board)
+                   .filter(square => {
+                        const piece = board.getPiece(square);
+                        return !piece || !piece.isKing();
+                   })
     }
 
     moveTo(board, newSquare) {
@@ -73,6 +77,10 @@ export default class Piece {
     }
 
     canBePromoted(board) {
+        return false;
+    }
+
+    isKing() {
         return false;
     }
 
