@@ -7,6 +7,7 @@ import Pawn from '../../../src/engine/pieces/pawn';
 import Rook from '../../../src/engine/pieces/rook';
 import Knight from '../../../src/engine/pieces/knight';
 import assertTake from '../assert_take';
+import canBePromoted from '../can_be_promoted';
 
 describe('King', () => {
 
@@ -172,5 +173,9 @@ describe('King', () => {
         const moves = king.getAvailableMoves(board);
 
         moves.should.not.deep.include(Square.at(0, 2));
+    });
+
+    it('cannot be promoted', () => {
+        canBePromoted(board, King, Player.WHITE, Square.at(7, 0), false);
     });
 });

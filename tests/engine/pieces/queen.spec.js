@@ -7,6 +7,7 @@ import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
 import GameSettings from '../../../src/engine/gameSettings';
 import assertTake from '../assert_take';
+import canBePromoted from '../can_be_promoted';
 
 describe('Queen', () => {
 
@@ -107,6 +108,10 @@ describe('Queen', () => {
         assertTake(board, Queen, Square.at(4,4), Player.WHITE,
                           King, Square.at(4,6), Player.BLACK, false);        
 
+    });
+
+    it('cannot be promoted', () => {
+        canBePromoted(board, Queen, Player.WHITE, Square.at(7, 0), false);
     });
 
 });

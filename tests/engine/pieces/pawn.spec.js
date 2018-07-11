@@ -6,6 +6,7 @@ import Board from '../../../src/engine/board';
 import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
 import assertTake from '../assert_take';
+import canBePromoted from '../can_be_promoted';
 
 describe('Pawn', () => {
 
@@ -70,7 +71,6 @@ describe('Pawn', () => {
             board.setPiece(Square.at(6, 1), pawn2);
 
             pawn2.moveTo(board, Square.at(4, 1));
-            console.log(board.findPiece(pawn2));
 
             pawn1.getAvailableMoves(board).should.deep.include(Square.at(5, 1));
         });
@@ -110,6 +110,15 @@ describe('Pawn', () => {
             moves.should.not.deep.include(Square.at(5, 1));
 
         });
+
+        it('can be promoted if at end', () => {
+            canBePromoted(board, Pawn, Player.WHITE, Square.at(7, 0), true);
+        });
+
+        it('cannot be promoted if not at end', () => {
+            canBePromoted(board, Pawn, Player.WHITE, Square.at(2, 0), false);
+        });
+      
     });
 
     describe('black pawns', () => {
@@ -214,6 +223,14 @@ describe('Pawn', () => {
             const moves = pawn1.getAvailableMoves(board);
             moves.should.not.deep.include(Square.at(2, 1));
         });
+
+        it('can be promoted if at end', () => {
+            canBePromoted(board, Pawn, Player.BLACK, Square.at(0, 0), true);
+        });
+
+        it('cannot be promoted if not at end', () => {
+            canBePromoted(board, Pawn, Player.BLACK, Square.at(2, 0), false);
+        });  
     });
 
     it('cannot move if there is a piece in front', () => {
@@ -237,5 +254,14 @@ describe('Pawn', () => {
 
         moves.should.not.deep.include(Square.at(4, 3));
     });
+
+    it('can correctly promote', () => {
+        const pawn = new Pawn(Player.WHITE);
+        const square = Square.at(7, 0)
+        board.setPiece(square);
+
+        board.promotePiece(square, Rook);
+        board.getPiece(square).should.be.an.instanceof(Rook);
+    }); 
 
 });
