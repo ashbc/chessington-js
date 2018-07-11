@@ -29,16 +29,8 @@ export default class Pawn extends Piece {
             [direction, -1]
         ]).filter(square => !!board.getPiece(square)));
 
-        const leftPiece = board.getPiece(Square.at(boardLocation.row, boardLocation.col-1));
-        const rightPiece = board.getPiece(Square.at(boardLocation.row, boardLocation.col+1));
-
-        if(leftPiece && leftPiece.hasMovedTwoSpaces && board.lastPieceMoved === leftPiece) {
-            moves.push(Square.at(boardLocation.row + direction, boardLocation.col - 1));
-        }
-
-        if(rightPiece && rightPiece.hasMovedTwoSpaces && board.lastPieceMoved === rightPiece) {
-            moves.push(Square.at(boardLocation.row + direction, boardLocation.col + 1));
-        }
+        this.checkEnPassant(boardLocation, board, moves, 1);
+        this.checkEnPassant(boardLocation, board, moves, -1);
 
     	return moves;
     }
@@ -50,5 +42,12 @@ export default class Pawn extends Piece {
         }
         super.moveTo(board, newSquare);
         this.hasMovedTwoSpaces = (Math.abs(newSquare.row - fromSquare.row) === 2);
+    }
+
+    checkEnPassant(boardLocation, board, moves, side) {
+        const piece = board.getPiece(Square.at(boardLocation.row, boardLocation.col+side));
+        if(piece && piece.hasMovedTwoSpaces && board.lastPieceMoved === piece) {
+            moves.push(Square.at(boardLocation.row + this.direction, boardLocation.col+side));
+        }
     }
 }
