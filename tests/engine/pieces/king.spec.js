@@ -102,7 +102,7 @@ describe('King', () => {
         king.moveTo(board, Square.at(0, 2));
 
         should.not.exist(board.getPiece(Square.at(0, 0)));
-        board.findPiece(rook).should.equal(Square.at(0, 3));
+        board.findPiece(rook).should.deep.equal(Square.at(0, 3));
     });
 
 
@@ -128,7 +128,7 @@ describe('King', () => {
         king.moveTo(board, Square.at(0, 6));
 
         should.not.exist(board.getPiece(Square.at(0, 7)));
-        board.findPiece(rook).should.equal(Square.at(0, 5));
+        board.findPiece(rook).should.deep.equal(Square.at(0, 5));
     });
 
 
