@@ -1,5 +1,5 @@
-import GameSettings from '../gameSettings'
-import Square from '../square'
+import GameSettings from '../gameSettings';
+import Square from '../square';
 
 export default class Piece {
     constructor(player) {
@@ -25,7 +25,6 @@ export default class Piece {
         .forEach(x => moves = moves.concat(x));
 
         return moves;
-       
     }
 
     checkDirection(boardLocation, board, rowOffset, colOffset) {
@@ -40,7 +39,7 @@ export default class Piece {
             const occupant = board.getPiece(newLocation);
             if(!occupant) {
                 moves.push(newLocation);
-            } else if(this.player !== occupant.player) {
+            } else if(occupant.canBeTakenBy(this)) {
                 moves.push(newLocation);
                 break;
             } else {
@@ -66,6 +65,11 @@ export default class Piece {
             .filter(square => square.isOnBoard())
             .filter(square => 
                 !board.getPiece(square)
-                || board.getPiece(square).player !== this.player);
+                || board.getPiece(square).canBeTakenBy(this));
     }
+
+    canBeTakenBy(taker) {
+        return taker.player !== this.player;
+    }
+
 }
