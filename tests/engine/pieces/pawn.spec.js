@@ -258,7 +258,7 @@ describe('Pawn', () => {
     it('can correctly promote', () => {
         const pawn = new Pawn(Player.WHITE);
         const square = Square.at(7, 0)
-        board.setPiece(square);
+        board.setPiece(square, pawn);
 
         board.promotePiece(square, Rook);
         board.getPiece(square).should.be.an.instanceof(Rook);
