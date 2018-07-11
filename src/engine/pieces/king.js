@@ -24,17 +24,33 @@ export default class King extends Piece {
     simulateMoveTo(board, newSquare) {
         const fromSquare = board.findPiece(this);
         const movedBy = newSquare.col - fromSquare.col;
-        if(Math.abs(movedBy) === 2) {
+        const didCastle = Math.abs(movedBy) === 2;
+        let castleRookLocation;
+        let castleRook;
+        let castleRookNewLocation;
+        if(didCastle) {
             const side = Math.sign(movedBy);
-            const rookLocation = this.findRook(fromSquare, board, side);
-            const rook = board.getPiece(rookLocation);
+            castleRookLocation = this.findRook(fromSquare, board, side);
+            castleRookNewLocation = Square.at(fromSquare.row, fromSquare.col + side);
+            castleRook = board.getPiece(castleRookLocation);
 
-            board.setPiece(
-                Square.at(fromSquare.row, fromSquare.col + side),
-                    rook);
-            board.setPiece(rookLocation, undefined);
+            board.setPiece(castleRookNewLocation, castleRook);
+            board.setPiece(castleRookLocation, undefined);
         }
-        super.simulateMoveTo(board, newSquare);
+        const undoData = super.simulateMoveTo(board, newSquare);
+
+        if(didCastle) {
+            undoData.push({
+                square: castleRookLocation,
+                piece: castleRook
+            });
+            undoData.push({
+                square: castleRookNewLocation,
+                piece: undefined
+            });
+        }
+
+        return undoData;
     }
 
     findRook(boardLocation, board, side) {

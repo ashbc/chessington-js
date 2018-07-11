@@ -31,10 +31,24 @@ export default class Piece {
         board.lastPieceMoved = this;
     }
 
+    // Returns "undo data": list of actions to perform to undo the move
+    // overriding methods (such as Pawn's for en passant) will return different data.
     simulateMoveTo(board, newSquare) {
         const currentSquare = board.findPiece(this);
+        const newSquareOccupant = board.getPiece(newSquare);
         board.setPiece(newSquare, this);
         board.setPiece(currentSquare, undefined);
+
+        return [
+            {
+                square: currentSquare,
+                piece: this
+            },
+            {
+                square: newSquare,
+                piece: newSquareOccupant
+            }
+        ];
     }
 
     getLateral(boardLocation, board) {

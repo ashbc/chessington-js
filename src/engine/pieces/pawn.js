@@ -44,16 +44,27 @@ export default class Pawn extends Piece {
 
     simulateMoveTo(board, newSquare) {
         const fromSquare = board.findPiece(this);
-       
+        const didEnPassant = fromSquare.col !== newSquare.col && !board.getPiece(newSquare);
+        let enPassantSquare;
+        let enPassantPiece;
         // en-passant taking behaviour
-        if(fromSquare.col !== newSquare.col && !board.getPiece(newSquare)) {
-            board.setPiece(Square.at(newSquare.row - this.direction, newSquare.col), undefined);
+        if(didEnPassant) {
+            enPassantSquare = Square.at(newSquare.row - this.direction, newSquare.col);
+            enPassantPiece = board.getPiece(enPassantSquare);
+            board.setPiece(enPassantSquare, undefined);
         }
 
         // this needs to go after the above
         // because otherwise we check the piece we just moved into
         // for the presence of a piece, and it will contain us, so we don't activate en passant
-        super.simulateMoveTo(board, newSquare);
+        let undoData = super.simulateMoveTo(board, newSquare);
+        if(didEnPassant) {
+            undoData.push({
+                square: enPassantSquare,
+                piece: enPassantPiece
+            });
+        }
+        return undoData;
     }
 
     addEnPassantMoves(boardLocation, board, moves, side) {
