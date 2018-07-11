@@ -46,7 +46,9 @@ export default class King extends Piece {
             if(!newLocation.isOnBoard()) return;
             
             const occupant = board.getPiece(newLocation);
-            if(occupant instanceof Rook && !occupant.hasMoved) {
+            if(occupant instanceof Rook
+                && occupant.player === this.player
+                && !occupant.hasMoved) {
                 return newLocation;
             } else if (occupant) {
                 return;
