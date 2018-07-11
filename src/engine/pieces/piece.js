@@ -72,4 +72,8 @@ export default class Piece {
         return taker.player !== this.player;
     }
 
+    canBePromoted(board) {
+        return false;
+    }
+
 }

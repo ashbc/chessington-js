@@ -48,4 +48,9 @@ export default class Board {
     
         this.lastPieceMoved = movingPiece;
     }
+
+    promotePiece(square, pieceClass) {
+        const player = this.getPiece(square).player;
+        this.setPiece(square, new pieceClass(player));
+    }
 }

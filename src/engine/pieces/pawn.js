@@ -1,6 +1,7 @@
 import Piece from './piece';
 import Player from '../player';
 import Square from '../square';
+import GameSettings from '../gameSettings';
 
 export default class Pawn extends Piece {
     constructor(player) {
@@ -48,6 +49,15 @@ export default class Pawn extends Piece {
         const piece = board.getPiece(Square.at(boardLocation.row, boardLocation.col+side));
         if(piece && piece.hasMovedTwoSpaces && board.lastPieceMoved === piece) {
             moves.push(Square.at(boardLocation.row + this.direction, boardLocation.col+side));
+        }
+    }
+
+    canBePromoted(board) {
+        const boardLocation = board.findPiece(this);
+        if(this.player === Player.WHITE) {
+            return boardLocation.row === GameSettings.BOARD_SIZE - 1;
+        } else {
+            return boardLocation.row === 0;
         }
     }
 }
