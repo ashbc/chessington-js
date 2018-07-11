@@ -77,7 +77,7 @@ function onDrop(source, target) {
 
         const modal = document.createElement('div');
         const h1 = document.createElement('h1');
-        h1.text = 'Choose a piece to promote to';
+        h1.textContent = 'Choose a piece to promote to';
         modal.appendChild(h1);
 
         const promotions = {
