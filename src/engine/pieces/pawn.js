@@ -38,11 +38,22 @@ export default class Pawn extends Piece {
 
     moveTo(board, newSquare) {
         const fromSquare = board.findPiece(this);
+        super.moveTo(board, newSquare);
+        this.hasMovedTwoSpaces = (Math.abs(newSquare.row - fromSquare.row) === 2);
+    }
+
+    simulateMoveTo(board, newSquare) {
+        const fromSquare = board.findPiece(this);
+       
+        // en-passant taking behaviour
         if(fromSquare.col !== newSquare.col && !board.getPiece(newSquare)) {
             board.setPiece(Square.at(newSquare.row - this.direction, newSquare.col), undefined);
         }
-        super.moveTo(board, newSquare);
-        this.hasMovedTwoSpaces = (Math.abs(newSquare.row - fromSquare.row) === 2);
+
+        // this needs to go after the above
+        // because otherwise we check the piece we just moved into
+        // for the presence of a piece, and it will contain us, so we don't activate en passant
+        super.simulateMoveTo(board, newSquare);
     }
 
     addEnPassantMoves(boardLocation, board, moves, side) {

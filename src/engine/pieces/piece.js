@@ -1,5 +1,6 @@
 import GameSettings from '../gameSettings';
 import Square from '../square';
+import Player from '../player';
 
 export default class Piece {
     constructor(player) {
@@ -13,12 +14,27 @@ export default class Piece {
                         const piece = board.getPiece(square);
                         return !piece || !piece.isKing();
                    })
+                   .filter(square => {return !this.causesCheck(board, square)});
+    }
+
+    causesCheck(board, square) {
+        return false;
     }
 
     moveTo(board, newSquare) {
         const currentSquare = board.findPiece(this);
-        board.movePiece(currentSquare, newSquare);
+
+        this.simulateMoveTo(board, newSquare);
+
         this.hasMoved = true;
+        board.currentPlayer = (board.currentPlayer === Player.WHITE ? Player.BLACK : Player.WHITE);
+        board.lastPieceMoved = this;
+    }
+
+    simulateMoveTo(board, newSquare) {
+        const currentSquare = board.findPiece(this);
+        board.setPiece(newSquare, this);
+        board.setPiece(currentSquare, undefined);
     }
 
     getLateral(boardLocation, board) {

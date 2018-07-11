@@ -21,7 +21,7 @@ export default class King extends Piece {
         return moves;
     }
 
-    moveTo(board, newSquare) {
+    simulateMoveTo(board, newSquare) {
         const fromSquare = board.findPiece(this);
         const movedBy = newSquare.col - fromSquare.col;
         if(Math.abs(movedBy) === 2) {
@@ -34,7 +34,7 @@ export default class King extends Piece {
                     rook);
             board.setPiece(rookLocation, undefined);
         }
-        super.moveTo(board, newSquare);
+        super.simulateMoveTo(board, newSquare);
     }
 
     findRook(boardLocation, board, side) {

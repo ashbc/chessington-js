@@ -37,17 +37,15 @@ export default class Board {
         throw new Error('The supplied piece is not on the board');
     }
 
-    movePiece(fromSquare, toSquare) {
-        const movingPiece = this.getPiece(fromSquare);
-        if(!movingPiece || movingPiece.player !== this.currentPlayer) {
-            throw new Error('movePiece called with an invalid move');
-        }
-        this.setPiece(toSquare, movingPiece);
-        this.setPiece(fromSquare, undefined);
-        this.currentPlayer = (this.currentPlayer === Player.WHITE ? Player.BLACK : Player.WHITE);
-    
-        this.lastPieceMoved = movingPiece;
-    }
+    // movePiece(fromSquare, toSquare) {
+    //     const movingPiece = this.getPiece(fromSquare);
+    //     if(!movingPiece || movingPiece.player !== this.currentPlayer) {
+    //         throw new Error('movePiece called with an invalid move');
+    //     }
+    //     this.setPiece(toSquare, movingPiece);
+    //     this.setPiece(fromSquare, undefined);
+
+    // }
 
     promotePiece(square, pieceClass) {
         const player = this.getPiece(square).player;
@@ -62,6 +60,6 @@ export default class Board {
                     this.getPiece(square) && this.getPiece(square).isKing()
                 )
             )
-        )
+        );
     }
 }
