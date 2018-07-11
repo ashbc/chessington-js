@@ -60,16 +60,48 @@ function onDragStart(source, piece, position, orientation) {
            (board.currentPlayer === Player.BLACK && piece.search(/^b/) !== -1);
 }
 
+let waitingForPromotion;
 function onDrop(source, target) {
     const fromSquare = positionStringToSquare(source);
     const toSquare = positionStringToSquare(target);
     const pieceToMove = board.getPiece(fromSquare);
     
-    if (!pieceToMove || !pieceToMove.getAvailableMoves(board).some(square => square.equals(toSquare))) {
+    if (!pieceToMove
+        || !pieceToMove.getAvailableMoves(board).some(square => square.equals(toSquare))
+        || waitingForPromotion) {
         return 'snapback';
     }
     pieceToMove.moveTo(board, toSquare);
+    if(pieceToMove.canBePromoted(board)) {
+        waitingForPromotion = true;
 
+        const modal = document.createElement('div');
+        const h1 = document.createElement('h1');
+        h1.text = 'Choose a piece to promote to';
+        modal.appendChild(h1);
+
+        const promotions = {
+            'queen': Queen,
+            'rook': Rook,
+            'bishop': Bishop,
+            'knight': Knight,
+        }
+        Object.keys(promotions).forEach(x => {
+            const button = document.createElement('button');
+            button.innerHTML = x;
+            button.onclick = e => {
+                waitingForPromotion = false;
+                board.promotePiece(toSquare, promotions[x]);
+                boardUI.position(boardToPositionObject(board));
+                body.removeChild(modal);
+            };
+
+            modal.appendChild(button);
+        })
+        modal.setAttribute('style', 'z-index: 1; position: fixed; background-color: #ccc;');
+        const body = document.querySelector('body');
+        body.appendChild(modal);
+    }
     updateStatus();
 }
 
