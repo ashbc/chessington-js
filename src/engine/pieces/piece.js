@@ -18,7 +18,10 @@ export default class Piece {
     }
 
     causesCheck(board, square) {
-        return false;
+        const undoData = this.simulateMoveTo(board, square);
+        const check = board.isCheck(this.player);
+        undoData.forEach(move => board.setPiece(move.square, move.piece));
+        return check;
     }
 
     moveTo(board, newSquare) {

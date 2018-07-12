@@ -37,16 +37,6 @@ export default class Board {
         throw new Error('The supplied piece is not on the board');
     }
 
-    // movePiece(fromSquare, toSquare) {
-    //     const movingPiece = this.getPiece(fromSquare);
-    //     if(!movingPiece || movingPiece.player !== this.currentPlayer) {
-    //         throw new Error('movePiece called with an invalid move');
-    //     }
-    //     this.setPiece(toSquare, movingPiece);
-    //     this.setPiece(fromSquare, undefined);
-
-    // }
-
     promotePiece(square, pieceClass) {
         const player = this.getPiece(square).player;
         this.setPiece(square, new pieceClass(player));
@@ -55,7 +45,8 @@ export default class Board {
     isCheck(player) {
         return this.board.some(row => 
             row.some(piece =>
-                piece.player !== player
+                piece
+                && piece.player !== player
                 && piece.getAvailableMovesWithKing(this).some(square =>
                     this.getPiece(square) && this.getPiece(square).isKing()
                 )
